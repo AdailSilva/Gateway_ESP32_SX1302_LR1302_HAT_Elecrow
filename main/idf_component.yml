@@ -1,0 +1,16 @@
+## IDF Component Manager Manifest File
+## ESP-IDF >= 6.0 no longer ships esp-mqtt inside the framework;
+## it is fetched from the ESP Component Registry (managed_components/).
+dependencies:
+  idf:
+    version: ">=5.0"
+  espressif/mqtt:
+    version: "*"
+    rules:
+      - if: "idf_version >=6.0"
+  ## mDNS (http://<host>.local/ and discovery by the Android app): only the
+  ## ESP32-S3 builds (WROOM-1U-N16R8 and WROOM-2-N32R16V). Option GW_MDNS in main/Kconfig.projbuild.
+  espressif/mdns:
+    version: ">=1.2.0"
+    rules:
+      - if: "target in [esp32s3]"

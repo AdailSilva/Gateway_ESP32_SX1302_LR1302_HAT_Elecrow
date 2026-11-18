@@ -1,0 +1,70 @@
+menu "ESP32_SX1302 gateway features"
+
+    # Feature flags of the gateway (GW_*). Each one has its default per board,
+    # so the code tests CONFIG_GW_<feature> instead of CONFIG_IDF_TARGET_*.
+    # ESP32-WROOM-32U (esp32): current feature set, RAM is tight (no PSRAM).
+    # ESP32-S3-WROOM-1U-N16R8 and ESP32-S3-WROOM-2-N32R16V (esp32s3):
+    # current features + the new ones.
+
+    choice GW_BOARD
+        prompt "Board (ESP32 module)"
+        default GW_BOARD_ESP32_WROOM_32U if IDF_TARGET_ESP32
+        default GW_BOARD_ESP32S3_WROOM_2_N32R16V if IDF_TARGET_ESP32S3
+        help
+            Module of the DevKit. Set by boards/<board>.defaults when the
+            firmware is built with scripts/build.sh <board> (or -D BOARD=<board>),
+            together with the flash and PSRAM options of the module. Changing it
+            here alone does NOT change flash/PSRAM: use scripts/build.sh.
+
+        config GW_BOARD_ESP32_WROOM_32U
+            bool "ESP32-WROOM-32U DevKit (4 MB flash, no PSRAM)"
+            depends on IDF_TARGET_ESP32
+
+        config GW_BOARD_ESP32S3_WROOM_1U_N16R8
+            bool "ESP32-S3-WROOM-1U-N16R8 DevKit (16 MB quad flash, 8 MB octal PSRAM)"
+            depends on IDF_TARGET_ESP32S3
+
+        config GW_BOARD_ESP32S3_WROOM_2_N32R16V
+            bool "ESP32-S3-WROOM-2-N32R16V DevKit (32 MB octal flash, 16 MB octal PSRAM)"
+            depends on IDF_TARGET_ESP32S3
+    endchoice
+
+    config GW_BOARD_ID
+        string
+        default "esp32" if GW_BOARD_ESP32_WROOM_32U
+        default "esp32s3_n16r8" if GW_BOARD_ESP32S3_WROOM_1U_N16R8
+        default "esp32s3_n32r16v" if GW_BOARD_ESP32S3_WROOM_2_N32R16V
+        help
+            Same value as BOARD in scripts/build.sh. Reported in GET /info ("board").
+
+    config GW_BOARD_NAME
+        string
+        default "ESP32-WROOM-32U" if GW_BOARD_ESP32_WROOM_32U
+        default "ESP32-S3-WROOM-1U-N16R8" if GW_BOARD_ESP32S3_WROOM_1U_N16R8
+        default "ESP32-S3-WROOM-2-N32R16V" if GW_BOARD_ESP32S3_WROOM_2_N32R16V
+        help
+            Module name shown on the boot banner and in GET /info ("board_name").
+
+    config GW_MDNS
+        bool "mDNS: announce the gateway as http://<host>.local/ (_http._tcp)"
+        depends on IDF_TARGET_ESP32S3
+        default y
+        help
+            Starts the mDNS responder (component espressif/mdns, pulled by
+            main/idf_component.yml only for the esp32s3 target). The Android
+            app finds the gateway on the Wi-Fi network without typing the IP,
+            and the browser opens it as http://<host>.local/.
+            Host name: "esp32-sx1302-" + the last 3 bytes of the Wi-Fi MAC,
+            or GW_MDNS_HOSTNAME when that one is not empty.
+            Cost on the S3: one mDNS task plus a few KB of RAM. Not offered
+            on the classic ESP32 (WROOM-32U): its free heap goes down to
+            ~10 KB with the MQTT TLS session.
+
+    config GW_MDNS_HOSTNAME
+        string "mDNS host name (empty = esp32-sx1302-<MAC>)"
+        depends on GW_MDNS
+        default ""
+        help
+            Letters, digits and '-' only, up to 31 characters, without ".local".
+
+endmenu

@@ -1,0 +1,17 @@
+ref,qtd,descrição,valor,observação
+J1,1,"Barra de pinos macho 2×20, passo 2,54 mm (pinos longos, 11 mm acima da placa)",2×20,recebe o LR1302 HAT como num Raspberry Pi
+U1,2,Barra de pinos fêmea 1×19 (ESP32-WROOM-32U DevKitC) ou 1×22 (ESP32-S3-DevKitC-1: N16R8 e N32R16V),1×19 / 1×22,meça a distância entre as fileiras da sua DevKit antes de soldar
+J2,1,"Jack DC fêmea 5,5 × 2,1 mm de painel",5 V,"entrada da fonte 5 V / 2 A (centro positivo); fica na parede de cima da caixa, acima do HAT"
+F1,1,"Fusível rearmável (PTC) 2 A, ou fio direto",2 A hold,opcional
+C1,1,"Capacitor eletrolítico (Ø 8 mm, montado deitado)",470 µF / 10 V,picos de corrente no TX do SX1250 (PA); fora da área da ventoinha
+C2,1,Capacitor cerâmico,100 nF,junto ao J1
+JP1,1,Barra 1×2 + jumper,5V_DEVKIT,fechado: a fonte alimenta a DevKit; aberto: a DevKit usa o USB do PC (GND continua comum)
+R1,1,Resistor 1/4 W,10 kΩ,opcional: segura o RESET do SX1302 em nível baixo enquanto o ESP32 inicia
+R2,1,Resistor 1/4 W,10 kΩ,opcional: CS do SX1302 em nível alto durante o boot
+R3,1,Resistor 1/4 W,10 kΩ,recomendado: CS do SX1261 em nível alto (não disputa o SPI)
+"R4, R5",2,Resistor 1/4 W,"4,7 kΩ",pull-ups do I2C (o HAT não tem; no RPi eles ficam no Pi)
+J3,1,"Barra fêmea 1×4 (VCC, GND, SCL, SDA)",OLED,"opcional: display SSD1306 0,96"" I2C, no mesmo barramento do STTS751"
+PCB,1,"Placa perfurada (ilhada) 70 × 90 mm, furos de canto de 3 mm",7×9 cm,cabe na caixa de ../case/
+H1–H4,4,Espaçador M2.5 × 11 mm + parafusos M2.5,M2.5 × 11,"fixa o HAT sobre a placa (padrão HAT, furos 58 × 49 mm)"
+H5–H8,4,Parafuso M3 × 6 mm autoatarraxante,M3,placa perfurada nos apoios da caixa
+—,1,Fio rígido AWG 26–28 (ou cabinho) para as ligações na face de solda,,ligações SPI curtas (< 5 cm na placa)

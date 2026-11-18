@@ -1,0 +1,12 @@
+# ESP32 (classic): options of the ESP32-WROOM-32U DevKit, no PSRAM
+# (flash options of the module: boards/esp32.defaults)
+# Applied on top of sdkconfig.defaults when IDF_TARGET=esp32.
+#
+# RAM for the MQTTS (TLS) handshake: it needs ~25-40 KB of contiguous heap and,
+# with the concentrator, Wi-Fi, web server and GPS, failed with
+# "Dynamic Impl: alloc(...) failed" / mbedtls -0x2700 / cert 0x8.
+
+# Wi-Fi: 6 static RX buffers instead of 10 (1.6 KB each) and no A-MPDU aggregation
+# on RX (its reorder window holds extra buffers); the gateway traffic is small.
+CONFIG_ESP_WIFI_STATIC_RX_BUFFER_NUM=6
+# CONFIG_ESP_WIFI_AMPDU_RX_ENABLED is not set

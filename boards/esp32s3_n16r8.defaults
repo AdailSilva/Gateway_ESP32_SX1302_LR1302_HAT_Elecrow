@@ -1,0 +1,30 @@
+# ---------------------------------------------------------------------------
+# Board: ESP32-S3-WROOM-1U-N16R8 DevKit (DevKitC-1, 2 x 22 pins)
+#        BOARD=esp32s3_n16r8   IDF_TARGET=esp32s3
+#
+#   Chip    ESP32-S3R8, Xtensa LX7 dual-core 240 MHz, 512 KB SRAM
+#   Flash   16 MB QUAD SPI, 3.3 V              (N16)
+#   PSRAM   8 MB OCTAL SPI, 3.3 V, GPIO35-37   (R8)
+#   Antenna external, u.FL connector (the "U")
+#   Console native USB (USB-Serial/JTAG, GPIO19/20) -> /dev/ttyACM0
+#           (set in sdkconfig.defaults.esp32s3)
+#
+# Differences from the WROOM-2 N32R16V: flash is QUAD (not octal) and 3.3 V,
+# so GPIO47/48 are normal 3.3 V pins here. Building the N32R16V firmware for
+# this module (octal flash) gives a board that never boots, and vice versa.
+#
+# Loaded after sdkconfig.defaults and sdkconfig.defaults.esp32s3 (see CMakeLists.txt).
+# Pin map: main/CMakeLists.txt. Guide: doc/hardware/ESP32-S3-WROOM-1U_N16R8_DevKit.md
+# ---------------------------------------------------------------------------
+CONFIG_GW_BOARD_ESP32S3_WROOM_1U_N16R8=y
+
+# Flash: 16 MB quad, 80 MHz
+CONFIG_ESPTOOLPY_FLASHMODE_QIO=y
+CONFIG_ESPTOOLPY_FLASHFREQ_80M=y
+CONFIG_ESPTOOLPY_FLASHSIZE_16MB=y
+
+# PSRAM: 8 MB octal, 80 MHz, added to the heap (malloc may return PSRAM)
+CONFIG_SPIRAM=y
+CONFIG_SPIRAM_MODE_OCT=y
+CONFIG_SPIRAM_SPEED_80M=y
+CONFIG_SPIRAM_USE_MALLOC=y

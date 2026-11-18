@@ -1,0 +1,14 @@
+# ESP32-S3: options common to BOTH S3 boards
+#   ESP32-S3-WROOM-1U-N16R8  (boards/esp32s3_n16r8.defaults)
+#   ESP32-S3-WROOM-2-N32R16V (boards/esp32s3_n32r16v.defaults)
+# Applied on top of sdkconfig.defaults when IDF_TARGET=esp32s3. Flash and PSRAM
+# differ between the two modules, so they live in boards/<board>.defaults.
+
+# Console (logs + ESP32_SX1302> command line) on the chip's native USB port -> /dev/ttyACM0
+CONFIG_ESP_CONSOLE_USB_SERIAL_JTAG=y
+
+# Partition table: 4 MB application (the S3 binary filled 96 % of the 1.5 MB
+# "single app large" table); nvs stays at 0x9000. See partitions_esp32s3.csv.
+CONFIG_PARTITION_TABLE_CUSTOM=y
+CONFIG_PARTITION_TABLE_CUSTOM_FILENAME="partitions_esp32s3.csv"
+CONFIG_PARTITION_TABLE_FILENAME="partitions_esp32s3.csv"

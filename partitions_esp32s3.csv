@@ -1,0 +1,11 @@
+# Partition table of the two ESP32-S3 boards (16 MB / 32 MB flash):
+#   ESP32-S3-WROOM-1U-N16R8 and ESP32-S3-WROOM-2-N32R16V
+# Same layout as "Single factory app (large)" of the ESP32 build, but with a
+# 4 MB application instead of 1.5 MB (the S3 binary already filled 96 % of
+# 1.5 MB). nvs and phy_init stay at the same offsets: a board that ran the
+# older S3 firmware keeps its configuration and MQTT certificates, and the
+# application is still written at 0x10000.
+# Name,   Type, SubType, Offset,   Size
+nvs,      data, nvs,     0x9000,   0x6000,
+phy_init, data, phy,     0xf000,   0x1000,
+factory,  app,  factory, 0x10000,  4M,
